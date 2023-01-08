@@ -1,0 +1,12 @@
+export const BLUE_COLOR = "#195EA0";
+export const RED_COLOR = "#EB0467";
+export const DARK_GREEN_COLOR = "#005E20";
+export const GREEN_COLOR = "#00AF55";
+export const LIGHT_GREEN_COLOR = "#97D6A9";
+export const WHITE_GREEN_COLOR = "#E5F5EA";
+export const BLACK_COLOR = "#1D2C22";
+export const DARK_GRAY_COLOR = "#7E827C";
+export const GRAY_COLOR = "#B5BAB3";
+export const LIGHT_GRAY_COLOR = "#D8DED5";
+export const WHITE_GRAY_COLOR = "#F5F5F5";
+export const WHITE_COLOR = "#FFFFFF";

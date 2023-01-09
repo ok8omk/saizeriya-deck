@@ -1,10 +1,11 @@
 import Head from "next/head";
 import styled from "@emotion/styled";
-import { Container } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import { Header } from "components/Header";
 import { TotalPrice } from "components/TotalPrice";
 import { TweetButton } from "components/TweetButton";
 import { OrderButton } from "components/OrderButton";
+import { MenuItem } from "components/MenuItem";
 import { theme } from "styles/theme";
 
 const Component: FCX = ({ className }) => (
@@ -29,6 +30,12 @@ const Component: FCX = ({ className }) => (
             <OrderButton />
           </div>
         </div>
+
+        <Stack spacing={2}>
+          {[1, 2, 3].map((n) => (
+            <MenuItem key={n} />
+          ))}
+        </Stack>
       </Container>
     </div>
   </>
@@ -45,6 +52,7 @@ const StyledComponent = styled(Component)`
 
     > .top {
       display: flex;
+      margin-bottom: ${theme.spacing(2)};
       > .buttons {
         flex: 1;
         display: flex;

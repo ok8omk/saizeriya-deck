@@ -1,7 +1,11 @@
 import Head from "next/head";
 import styled from "@emotion/styled";
+import { Container } from "@mui/material";
 import { Header } from "components/Header";
-import { WHITE_GRAY_COLOR } from "styles/colors";
+import { TotalPrice } from "components/TotalPrice";
+import { TweetButton } from "components/TweetButton";
+import { OrderButton } from "components/OrderButton";
+import { theme } from "styles/theme";
 
 const Component: FCX = ({ className }) => (
   <>
@@ -17,13 +21,38 @@ const Component: FCX = ({ className }) => (
 
     <div className={className}>
       <Header />
+      <Container className={className + "--main"} maxWidth="md">
+        <div className="top">
+          <TotalPrice />
+          <div className="buttons">
+            <TweetButton />
+            <OrderButton />
+          </div>
+        </div>
+      </Container>
     </div>
   </>
 );
 
 const StyledComponent = styled(Component)`
-  background: ${WHITE_GRAY_COLOR};
-  min-height: 100vh;
+  --header-height: 48px;
+
+  background-color: ${theme.palette.grey[100]};
+  &--main {
+    min-height: calc(100vh - var(--header-height));
+    margin-top: var(--header-height);
+    padding: ${theme.spacing(2, 1)};
+
+    > .top {
+      display: flex;
+      > .buttons {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        gap: ${theme.spacing(1)};
+      }
+    }
+  }
 `;
 
 const Index = () => {

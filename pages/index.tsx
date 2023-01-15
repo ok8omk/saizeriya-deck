@@ -1,14 +1,28 @@
+import { useState } from "react";
 import Head from "next/head";
 import styled from "@emotion/styled";
 import { Container, Stack } from "@mui/material";
+import { theme } from "styles/theme";
 import { Header } from "components/Header";
 import { TotalPrice } from "components/TotalPrice";
 import { TweetButton } from "components/TweetButton";
 import { OrderButton } from "components/OrderButton";
 import { MenuItem } from "components/MenuItem";
-import { theme } from "styles/theme";
+import { AddFab } from "components/AddFab";
+import { SearchDrawer } from "components/SearchDrawer";
 
-const Component: FCX = ({ className }) => (
+type ComponentProps = {
+  openSearchDrawer: boolean;
+  onClickAddFab: () => void;
+  onCloseSearchDrawer: () => void;
+};
+
+const Component: FCX<ComponentProps> = ({
+  className,
+  openSearchDrawer,
+  onClickAddFab,
+  onCloseSearchDrawer,
+}) => (
   <>
     <Head>
       <title>サイゼデッキ！</title>
@@ -37,6 +51,10 @@ const Component: FCX = ({ className }) => (
           ))}
         </Stack>
       </Container>
+
+      <AddFab className="add-fab" onClick={onClickAddFab} />
+
+      <SearchDrawer open={openSearchDrawer} onClose={onCloseSearchDrawer} />
     </div>
   </>
 );
@@ -44,6 +62,7 @@ const Component: FCX = ({ className }) => (
 const StyledComponent = styled(Component)`
   --header-height: 48px;
 
+  position: relative;
   background-color: ${theme.palette.grey[100]};
   &--main {
     min-height: calc(100vh - var(--header-height));
@@ -61,10 +80,30 @@ const StyledComponent = styled(Component)`
       }
     }
   }
+
+  > .add-fab {
+    position: fixed;
+    bottom: ${theme.spacing(4)};
+    right: ${theme.spacing(4)};
+  }
 `;
 
 const Index = () => {
-  return <StyledComponent />;
+  const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
+  const onClickAddFab = () => {
+    setOpenSearchDrawer(true);
+  };
+  const onCloseSearchDrawer = () => {
+    setOpenSearchDrawer(false);
+  };
+
+  const componentProps: ComponentProps = {
+    openSearchDrawer,
+    onClickAddFab,
+    onCloseSearchDrawer,
+  };
+
+  return <StyledComponent {...componentProps} />;
 };
 
 export default Index;

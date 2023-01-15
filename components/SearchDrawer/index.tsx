@@ -111,8 +111,15 @@ export const SearchDrawer: FCX<Props> = (props) => {
   const { category, handleSetCategory, handleUnsetCategory } =
     useSearchCategory();
 
+  // Drawerを閉じたときにカテゴリの選択状態をリセットする
+  const onClose = () => {
+    props.onClose();
+    handleUnsetCategory();
+  };
+
   const componentProps: ComponentProps = {
-    ...props,
+    open: props.open,
+    onClose,
     category,
     handleSetCategory,
     handleUnsetCategory,

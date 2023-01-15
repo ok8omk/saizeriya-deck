@@ -1,8 +1,14 @@
+import { useState, useRef, useEffect, FC } from "react";
 import styled from "@emotion/styled";
 import { BLACK_COLOR } from "styles/colors";
+import { usePriceWithAnimation } from "./usePriceWithAnimation";
+
+type Props = {
+  price: number;
+};
 
 type ComponentProps = {
-  price: number;
+  price: string;
 };
 
 const Component: FCX<ComponentProps> = ({ className, price }) => (
@@ -23,9 +29,11 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-export const TotalPrice = () => {
+export const TotalPrice: FC<Props> = (props) => {
+  const price = usePriceWithAnimation(props.price);
+
   const componentProps: ComponentProps = {
-    price: 50000, // 後で設定する
+    price: price.toLocaleString(),
   };
 
   return <StyledComponent {...componentProps} />;

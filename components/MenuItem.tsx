@@ -1,16 +1,23 @@
+import type { FC } from "react";
 import styled from "@emotion/styled";
 import { Card, CardActions, IconButton } from "@mui/material";
 import NoPhotographyOutlinedIcon from "@mui/icons-material/NoPhotographyOutlined";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { theme } from "styles/theme";
+import { useDeckDispatch } from "hooks/useDeckReducer";
+
+type Props = {
+  index: number;
+  imageUrl?: string;
+  name: string;
+  price: number;
+};
 
 type ComponentProps = {
   imageUrl?: string;
   name: string;
-  price: number;
+  price: string;
   onClickDelete: () => void;
-  onClickFavorite: () => void;
 };
 
 const Component: FCX<ComponentProps> = ({
@@ -19,7 +26,6 @@ const Component: FCX<ComponentProps> = ({
   name,
   price,
   onClickDelete,
-  onClickFavorite,
 }) => (
   <Card className={className}>
     <div className="image-container">
@@ -35,15 +41,12 @@ const Component: FCX<ComponentProps> = ({
 
     <div className="description">
       <div className="name">{name}</div>
-      <div className="price">{price.toLocaleString()}円</div>
+      <div className="price">{price}円</div>
     </div>
 
     <CardActions className="buttons">
       <IconButton onClick={onClickDelete}>
         <DeleteOutlineIcon />
-      </IconButton>
-      <IconButton onClick={onClickFavorite}>
-        <FavoriteBorderOutlinedIcon />
       </IconButton>
     </CardActions>
   </Card>
@@ -98,12 +101,18 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-export const MenuItem = () => {
+export const MenuItem: FC<Props> = ({ index, imageUrl, name, price }) => {
+  const dispatch = useDeckDispatch();
+
+  const onClickDelete = () => {
+    dispatch({ type: "deleteMenu", index });
+  };
+
   const componentProps: ComponentProps = {
-    name: "小エビのサラダ",
-    price: 350,
-    onClickDelete: () => {}, // 後で設定する
-    onClickFavorite: () => {}, // 後で設定する
+    imageUrl,
+    name,
+    price: price.toLocaleString(),
+    onClickDelete,
   };
 
   return <StyledComponent {...componentProps} />;

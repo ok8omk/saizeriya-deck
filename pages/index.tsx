@@ -10,8 +10,12 @@ import { OrderButton } from "components/OrderButton";
 import { MenuItem } from "components/MenuItem";
 import { AddFab } from "components/AddFab";
 import { SearchDrawer } from "components/SearchDrawer";
+import { useDeckReducer, DeckDispatchContext } from "hooks/useDeckReducer";
+import { Menu } from "pages/api/menus";
 
 type ComponentProps = {
+  totalPrice: number;
+  menus: Menu[];
   openSearchDrawer: boolean;
   onClickAddFab: () => void;
   onCloseSearchDrawer: () => void;
@@ -19,6 +23,8 @@ type ComponentProps = {
 
 const Component: FCX<ComponentProps> = ({
   className,
+  totalPrice,
+  menus,
   openSearchDrawer,
   onClickAddFab,
   onCloseSearchDrawer,
@@ -38,7 +44,7 @@ const Component: FCX<ComponentProps> = ({
       <Header />
       <Container className={className + "--main"} maxWidth="md">
         <div className="top">
-          <TotalPrice />
+          <TotalPrice price={totalPrice} />
           <div className="buttons">
             <TweetButton />
             <OrderButton />
@@ -46,8 +52,13 @@ const Component: FCX<ComponentProps> = ({
         </div>
 
         <Stack spacing={2}>
-          {[1, 2, 3].map((n) => (
-            <MenuItem key={n} />
+          {menus.map((menu, index) => (
+            <MenuItem
+              key={index}
+              index={index}
+              name={menu.name}
+              price={menu.price}
+            />
           ))}
         </Stack>
       </Container>
@@ -89,6 +100,8 @@ const StyledComponent = styled(Component)`
 `;
 
 const Index = () => {
+  const [deck, deckDispatch] = useDeckReducer();
+
   const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
   const onClickAddFab = () => {
     window.scroll({ top: 0, left: 0, behavior: "smooth" });
@@ -99,12 +112,18 @@ const Index = () => {
   };
 
   const componentProps: ComponentProps = {
+    totalPrice: deck.totalPrice(),
+    menus: deck.menus,
     openSearchDrawer,
     onClickAddFab,
     onCloseSearchDrawer,
   };
 
-  return <StyledComponent {...componentProps} />;
+  return (
+    <DeckDispatchContext.Provider value={deckDispatch}>
+      <StyledComponent {...componentProps} />
+    </DeckDispatchContext.Provider>
+  );
 };
 
 export default Index;

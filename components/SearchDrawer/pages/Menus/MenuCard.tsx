@@ -1,18 +1,19 @@
 import { FC } from "react";
 import styled from "@emotion/styled";
-import { Card } from "@mui/material";
+import { Card, CardActionArea } from "@mui/material";
 import NoPhotographyOutlinedIcon from "@mui/icons-material/NoPhotographyOutlined";
 import { theme } from "styles/theme";
+import type { Menu } from "pages/api/menus";
+import { useDeckDispatch } from "hooks/useDeckReducer";
 
 type Props = {
-  imageUrl?: string;
-  name: string;
-  price: number;
+  menu: Menu;
 };
 type ComponentProps = {
   imageUrl?: string;
   name: string;
   price: string;
+  onClick: () => void;
 };
 
 const Component: FCX<ComponentProps> = ({
@@ -20,75 +21,96 @@ const Component: FCX<ComponentProps> = ({
   imageUrl,
   name,
   price,
+  onClick,
 }) => (
   <Card className={className}>
-    <div className={className + "__image-container"}>
-      {imageUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img className="image" src={imageUrl} alt={name} />
-      ) : (
-        <div className="no-image">
-          <NoPhotographyOutlinedIcon className="icon" />
+    <CardActionArea onClick={onClick}>
+      <div className={className + "__container"}>
+        <div className="image-container">
+          {imageUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="image" src={imageUrl} alt={name} />
+          ) : (
+            <div className="no-image">
+              <NoPhotographyOutlinedIcon className="icon" />
+            </div>
+          )}
         </div>
-      )}
-    </div>
-    <div>
-      <div className={className + "__description"}>
-        <div className="name">{name}</div>
-        <div className="price">{price}円</div>
+        <div className="description">
+          <div className="name">{name}</div>
+          <div className="price">{price}円</div>
+        </div>
       </div>
-    </div>
+    </CardActionArea>
   </Card>
 );
 
 const StyledComponent = styled(Component)`
   height: 160px;
 
-  &__image-container {
+  .MuiCardActionArea-root {
+    height: 100%;
+  }
+
+  &__container {
     width: 100%;
-    height: 80px;
-    > .image {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    > .image-container {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: 80px;
+      flex-shrink: 0;
+      > .image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      > .no-image {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: ${theme.palette.grey[300]};
+        > .icon {
+          fill: ${theme.palette.common.white};
+        }
+      }
     }
 
-    > .no-image {
+    > .description {
       width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: ${theme.palette.grey[300]};
-      > .icon {
-        fill: ${theme.palette.common.white};
+      flex-grow: 1;
+      overflow: hidden;
+      padding: ${theme.spacing(1)};
+      > .name {
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: ${theme.spacing(0.5)};
+      }
+      > .price {
+        font-size: 10px;
       }
     }
   }
-
-  &__description {
-    overflow: hidden;
-    padding: ${theme.spacing(1)};
-    > .name {
-      font-size: 12px;
-      font-weight: bold;
-      margin-bottom: ${theme.spacing(0.5)};
-    }
-    > .price {
-      font-size: 10px;
-    }
-  }
-
-  > .buttons {
-    flex-shrink: 0;
-  }
 `;
 
-export const MenuCard: FC<Props> = ({ imageUrl, name, price }) => {
-  const componentProps: ComponentProps = {
-    imageUrl,
-    name,
-    price: price.toLocaleString(),
+export const MenuCard: FC<Props> = ({ menu }) => {
+  const dispatch = useDeckDispatch();
+
+  const onClick = () => {
+    dispatch({ type: "addMenu", menu });
   };
+
+  const componentProps: ComponentProps = {
+    imageUrl: menu.imageUrl,
+    name: menu.name,
+    price: menu.price.toLocaleString(),
+    onClick,
+  };
+
   return <StyledComponent {...componentProps} />;
 };

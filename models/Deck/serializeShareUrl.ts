@@ -1,5 +1,7 @@
 import { Deck } from "../Deck";
 
+// WebWorkerでしか使えないURLSearchParamsを使っているため、サーバーサイドでは呼び出せない
+// サーバーサイドレンダリングで呼び出されないよう、useEffectでラップするなどする
 export const serializeShareUrl = (deck: Deck) => {
   const menusParam = deck.menus.map((menu) => menu.id).join(",");
 

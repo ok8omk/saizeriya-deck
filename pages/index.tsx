@@ -91,6 +91,7 @@ const StyledComponent = styled(Component)`
 const Index = () => {
   const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
   const onClickAddFab = () => {
+    window.scroll({ top: 0, left: 0, behavior: "smooth" });
     setOpenSearchDrawer(true);
   };
   const onCloseSearchDrawer = () => {

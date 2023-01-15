@@ -67,7 +67,7 @@ const StyledComponent = styled(Component)`
 
   &__container {
     position: relative;
-    height: calc(100vh - 112px); // 合計金額まで見える
+    height: calc(100vh - 160px); // 合計金額まで見える
     overflow-y: scroll;
 
     > .header {

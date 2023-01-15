@@ -6,7 +6,7 @@ export type Menu = {
   id: string;
   name: string;
   price: number;
-  imageUrl?: string;
+  imageUrl: string;
   season: string;
 };
 
@@ -14,9 +14,7 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Menu[]>
 ) {
-  const filePath = path.join(process.cwd(), "data/csv/menus.csv");
-  const menus = readCsv(filePath);
-
+  const menus = readCsv();
   const category = req.query["category"];
 
   if (typeof category === "string") {
@@ -27,7 +25,9 @@ export default function handler(
   }
 }
 
-const readCsv = (filePath: string): Menu[] => {
+const readCsv = (): Menu[] => {
+  const filePath = path.join(process.cwd(), "data/csv/menus.csv");
+
   const file = fs.readFileSync(filePath);
   const rows = file.toString().split("\n");
 
@@ -40,6 +40,19 @@ const readCsv = (filePath: string): Menu[] => {
       name: col[1],
       price: Number(col[2]),
       season: col[3],
+      imageUrl: getImageUrl(col[0]),
     };
   });
+};
+
+const getImageUrl = (id: string): string => {
+  const file = fs.readFileSync(
+    path.join(process.cwd(), "data/menu-image-names.txt")
+  );
+  const filenames = file.toString().split("\n");
+  const filename = filenames.find((filename) => filename.includes(id));
+
+  if (!filename) return "/no-image.png";
+
+  return `/assets/menus/${filename}`;
 };

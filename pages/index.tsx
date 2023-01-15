@@ -53,12 +53,7 @@ const Component: FCX<ComponentProps> = ({
 
         <Stack spacing={2}>
           {menus.map((menu, index) => (
-            <MenuItem
-              key={index}
-              index={index}
-              name={menu.name}
-              price={menu.price}
-            />
+            <MenuItem key={index} index={index} menu={menu} />
           ))}
         </Stack>
       </Container>

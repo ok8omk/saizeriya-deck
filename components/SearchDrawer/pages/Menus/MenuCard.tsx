@@ -1,7 +1,6 @@
 import { FC } from "react";
 import styled from "@emotion/styled";
 import { Card, CardActionArea } from "@mui/material";
-import NoPhotographyOutlinedIcon from "@mui/icons-material/NoPhotographyOutlined";
 import { theme } from "styles/theme";
 import type { Menu } from "pages/api/menus";
 import { useDeckDispatch } from "hooks/useDeckReducer";
@@ -10,7 +9,7 @@ type Props = {
   menu: Menu;
 };
 type ComponentProps = {
-  imageUrl?: string;
+  imageUrl: string;
   name: string;
   price: string;
   onClick: () => void;
@@ -27,14 +26,11 @@ const Component: FCX<ComponentProps> = ({
     <CardActionArea onClick={onClick}>
       <div className={className + "__container"}>
         <div className="image-container">
-          {imageUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img className="image" src={imageUrl} alt={name} />
-          ) : (
-            <div className="no-image">
-              <NoPhotographyOutlinedIcon className="icon" />
-            </div>
-          )}
+          {
+            // 画像によってサイズが違っており、width・heightを指定できないのでImageは使わない
+            /* eslint-disable @next/next/no-img-element */
+          }
+          <img className="image" src={imageUrl} alt={name} />
         </div>
         <div className="description">
           <div className="name">{name}</div>

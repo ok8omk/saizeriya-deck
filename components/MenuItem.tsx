@@ -1,20 +1,18 @@
 import type { FC } from "react";
 import styled from "@emotion/styled";
 import { Card, CardActions, IconButton } from "@mui/material";
-import NoPhotographyOutlinedIcon from "@mui/icons-material/NoPhotographyOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { theme } from "styles/theme";
 import { useDeckDispatch } from "hooks/useDeckReducer";
+import { Menu } from "pages/api/menus";
 
 type Props = {
   index: number;
-  imageUrl?: string;
-  name: string;
-  price: number;
+  menu: Menu;
 };
 
 type ComponentProps = {
-  imageUrl?: string;
+  imageUrl: string;
   name: string;
   price: string;
   onClickDelete: () => void;
@@ -29,14 +27,11 @@ const Component: FCX<ComponentProps> = ({
 }) => (
   <Card className={className}>
     <div className="image-container">
-      {imageUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img className="image" src={imageUrl} alt={name} />
-      ) : (
-        <div className="no-image">
-          <NoPhotographyOutlinedIcon className="icon" />
-        </div>
-      )}
+      {
+        // 画像によってサイズが違っており、width・heightを指定できないのでImageは使わない
+        /* eslint-disable @next/next/no-img-element */
+      }
+      <img className="image" src={imageUrl} alt={name} />
     </div>
 
     <div className="description">
@@ -101,7 +96,7 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-export const MenuItem: FC<Props> = ({ index, imageUrl, name, price }) => {
+export const MenuItem: FC<Props> = ({ index, menu }) => {
   const dispatch = useDeckDispatch();
 
   const onClickDelete = () => {
@@ -109,9 +104,9 @@ export const MenuItem: FC<Props> = ({ index, imageUrl, name, price }) => {
   };
 
   const componentProps: ComponentProps = {
-    imageUrl,
-    name,
-    price: price.toLocaleString(),
+    imageUrl: menu.imageUrl,
+    name: menu.name,
+    price: menu.price.toLocaleString(),
     onClickDelete,
   };
 

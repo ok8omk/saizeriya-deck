@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, FC, useEffect } from "react";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import styled from "@emotion/styled";
 import { Container, Stack } from "@mui/material";
@@ -12,10 +13,18 @@ import { AddFab } from "components/AddFab";
 import { SearchDrawer } from "components/SearchDrawer";
 import { useDeckReducer, DeckDispatchContext } from "hooks/useDeckReducer";
 import { Menu } from "pages/api/menus";
+import { Deck } from "models/Deck";
+import { serializeShareUrl } from "models/Deck/serializeShareUrl";
+import { deserializeShareQuery } from "models/Deck/deserializeShareQuery";
+
+type Props = {
+  menus: Menu[];
+};
 
 type ComponentProps = {
   totalPrice: number;
   menus: Menu[];
+  shareUrl: string;
   openSearchDrawer: boolean;
   onClickAddFab: () => void;
   onCloseSearchDrawer: () => void;
@@ -25,6 +34,7 @@ const Component: FCX<ComponentProps> = ({
   className,
   totalPrice,
   menus,
+  shareUrl,
   openSearchDrawer,
   onClickAddFab,
   onCloseSearchDrawer,
@@ -46,7 +56,7 @@ const Component: FCX<ComponentProps> = ({
         <div className="top">
           <TotalPrice price={totalPrice} />
           <div className="buttons">
-            <TweetButton />
+            <TweetButton shareUrl={shareUrl} />
             <OrderButton />
           </div>
         </div>
@@ -94,8 +104,9 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-const Index = () => {
-  const [deck, deckDispatch] = useDeckReducer();
+const Index: FC<Props> = ({ menus }) => {
+  const [shareUrl, setShareUrl] = useState("");
+  const [deck, deckDispatch] = useDeckReducer(new Deck(menus));
 
   const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
   const onClickAddFab = () => {
@@ -106,9 +117,14 @@ const Index = () => {
     setOpenSearchDrawer(false);
   };
 
+  useEffect(() => {
+    setShareUrl(serializeShareUrl(deck));
+  }, [deck]);
+
   const componentProps: ComponentProps = {
     totalPrice: deck.totalPrice(),
     menus: deck.menus,
+    shareUrl,
     openSearchDrawer,
     onClickAddFab,
     onCloseSearchDrawer,
@@ -122,3 +138,15 @@ const Index = () => {
 };
 
 export default Index;
+
+export const getServerSideProps: GetServerSideProps<Props> = async (
+  context
+) => {
+  const deck = await deserializeShareQuery(context.query);
+
+  return {
+    props: {
+      menus: deck.menus,
+    },
+  };
+};

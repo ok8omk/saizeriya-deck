@@ -14,7 +14,7 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Menu[]>
 ) {
-  const menus = readCsv();
+  const menus = readMenusCsv();
   const category = req.query["category"];
 
   if (typeof category === "string") {
@@ -25,7 +25,7 @@ export default function handler(
   }
 }
 
-const readCsv = (): Menu[] => {
+export const readMenusCsv = (): Menu[] => {
   const filePath = path.join(process.cwd(), "data/csv/menus.csv");
 
   const file = fs.readFileSync(filePath);

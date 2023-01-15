@@ -18,7 +18,7 @@ const Component: FCX<ComponentProps> = ({ className, menus }) => (
     <Grid container spacing={2}>
       {menus.map((menu) => (
         <Grid key={menu.id} item xs={6}>
-          <MenuCard key={menu.id} name={menu.name} price={menu.price} />
+          <MenuCard key={menu.id} menu={menu} />
         </Grid>
       ))}
     </Grid>

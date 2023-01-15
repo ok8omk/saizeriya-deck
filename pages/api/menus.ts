@@ -46,9 +46,11 @@ const readCsv = (): Menu[] => {
 };
 
 const getImageUrl = (id: string): string => {
-  const filename = fs
-    .readdirSync(path.join(process.cwd(), "public/assets/menus"))
-    .find((filename) => filename.includes(id));
+  const file = fs.readFileSync(
+    path.join(process.cwd(), "data/menu-image-names.txt")
+  );
+  const filenames = file.toString().split("\n");
+  const filename = filenames.find((filename) => filename.includes(id));
 
   if (!filename) return "/no-image.png";
 

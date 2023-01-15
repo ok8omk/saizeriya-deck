@@ -2,7 +2,6 @@ import type { FC } from "react";
 import styled from "@emotion/styled";
 import { Card, CardActions, IconButton } from "@mui/material";
 import NoPhotographyOutlinedIcon from "@mui/icons-material/NoPhotographyOutlined";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { theme } from "styles/theme";
 import { useDeckDispatch } from "hooks/useDeckReducer";
@@ -19,7 +18,6 @@ type ComponentProps = {
   name: string;
   price: string;
   onClickDelete: () => void;
-  onClickFavorite: () => void;
 };
 
 const Component: FCX<ComponentProps> = ({
@@ -28,7 +26,6 @@ const Component: FCX<ComponentProps> = ({
   name,
   price,
   onClickDelete,
-  onClickFavorite,
 }) => (
   <Card className={className}>
     <div className="image-container">
@@ -50,9 +47,6 @@ const Component: FCX<ComponentProps> = ({
     <CardActions className="buttons">
       <IconButton onClick={onClickDelete}>
         <DeleteOutlineIcon />
-      </IconButton>
-      <IconButton onClick={onClickFavorite}>
-        <FavoriteBorderOutlinedIcon />
       </IconButton>
     </CardActions>
   </Card>
@@ -119,7 +113,6 @@ export const MenuItem: FC<Props> = ({ index, imageUrl, name, price }) => {
     name,
     price: price.toLocaleString(),
     onClickDelete,
-    onClickFavorite: () => {}, // 後で設定する
   };
 
   return <StyledComponent {...componentProps} />;

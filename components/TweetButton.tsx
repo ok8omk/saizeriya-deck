@@ -26,7 +26,7 @@ const Component: FCX<ComponentProps> = ({ className, url }) => (
 export const TweetButton: FC<Props> = (props) => {
   let params = new URLSearchParams();
   params.set("url", props.shareUrl);
-  params.set("hashtags", "サイゼデッキ！");
+  params.set("hashtags", "サイゼデッキ");
   params.set("text", "おすすめメニューはこれ！");
   const url = ["https://twitter.com/intent/tweet", "?", params.toString()].join(
     ""

@@ -1,6 +1,6 @@
 import { useReducer, useContext, createContext, Dispatch } from "react";
 import type { Menu } from "pages/api/menus";
-import { Deck } from "./Deck";
+import { Deck } from "../models/Deck";
 
 type State = {
   menus: Menu[];
@@ -41,8 +41,8 @@ const reducer = (state: State, action: Action) => {
   }
 };
 
-export const useDeckReducer = (): [Deck, Dispatch<Action>] => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+export const useDeckReducer = (deck: Deck): [Deck, Dispatch<Action>] => {
+  const [state, dispatch] = useReducer(reducer, toState(deck));
   return [new Deck(state.menus), dispatch];
 };
 

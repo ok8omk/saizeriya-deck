@@ -8,7 +8,7 @@ export const deserializeShareQuery = async (query: {
 }): Promise<Deck> => {
   const value = query["menus"];
   if (typeof value !== "string") return new Deck();
-  const menuIds = value.split(",");
+  const menuIds = decodeURIComponent(value).split(",");
   const menus = readMenusCsv();
 
   const menuDict: { [id: string]: Menu } = Object.fromEntries(

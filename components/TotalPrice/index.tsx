@@ -1,6 +1,7 @@
-import { FC } from "react";
+import { useState, useRef, useEffect, FC } from "react";
 import styled from "@emotion/styled";
 import { BLACK_COLOR } from "styles/colors";
+import { usePriceWithAnimation } from "./usePriceWithAnimation";
 
 type Props = {
   price: number;
@@ -28,7 +29,9 @@ const StyledComponent = styled(Component)`
   }
 `;
 
-export const TotalPrice: FC<Props> = ({ price }) => {
+export const TotalPrice: FC<Props> = (props) => {
+  const price = usePriceWithAnimation(props.price);
+
   const componentProps: ComponentProps = {
     price: price.toLocaleString(),
   };

@@ -11,6 +11,7 @@ import { OrderButton } from "components/OrderButton";
 import { MenuItem } from "components/MenuItem";
 import { AddFab } from "components/AddFab";
 import { SearchDrawer } from "components/SearchDrawer";
+import { Footer } from "components/Footer";
 import { useDeckReducer, DeckDispatchContext } from "hooks/useDeckReducer";
 import { Menu } from "pages/api/menus";
 import { Deck } from "models/Deck";
@@ -67,6 +68,7 @@ const Component: FCX<ComponentProps> = ({
           ))}
         </Stack>
       </Container>
+      <Footer />
 
       <AddFab className="add-fab" onClick={onClickAddFab} />
 

@@ -13,7 +13,10 @@ type ComponentProps = Props;
 const Component: FCX<ComponentProps> = ({ className, onClick, name }) => (
   <Card className={className}>
     <div className={className + "__card"}>
-      <CardActionArea onClick={onClick}>
+      <CardActionArea
+        className={className + "__card-action-area"}
+        onClick={onClick}
+      >
         <CardContent className={className + "__card-content"}>
           <div className="name">{name}</div>
         </CardContent>
@@ -25,8 +28,11 @@ const Component: FCX<ComponentProps> = ({ className, onClick, name }) => (
 const StyledComponent = styled(Component)`
   &__card {
     overflow: hidden;
-    background: 1px solid ${theme.palette.secondary.light};
     height: 56px;
+  }
+
+  &__card-action-area {
+    height: 100%;
   }
 
   &__card-content {

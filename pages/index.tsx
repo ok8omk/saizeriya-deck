@@ -58,7 +58,6 @@ const Component: FCX<ComponentProps> = ({
           <TotalPrice price={totalPrice} />
           <div className="buttons">
             <TweetButton shareUrl={shareUrl} />
-            <OrderButton />
           </div>
         </div>
 
